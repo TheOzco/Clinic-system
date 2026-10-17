@@ -3,195 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستم اتوماسیون کلینیک زیبایی</title>
+    <title>سیستم اتوماسیون کلینیک | سایبرپانک</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Vazirmatn', sans-serif; }
+        body { 
+            font-family: 'Vazirmatn', sans-serif; 
+            background-color: #05050a;
+            color: #e2e8f0;
+        }
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+        .neon-glow-pink {
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        }
+        .cyber-border {
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .cyber-input {
+            background: #090d16;
+            border: 1px solid #1e293b;
+            color: #38bdf8;
+        }
+        .cyber-input:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+            outline: none;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+<body class="min-h-screen pb-16">
 
-    <!-- ناوبری بالای صفحه -->
-    <header class="bg-indigo-600 text-white shadow-lg p-4 sticky top-0 z-50">
-        <div class="container mx-auto flex flex-wrap justify-between items-center">
-            <h1 class="text-xl font-bold">✨ سیستم اتوماسیون کلینیک</h1>
-            <nav class="flex gap-2 mt-2 md:mt-0 overflow-x-auto">
-                <button onclick="switchTab('scanner')" class="tab-btn bg-indigo-700 px-3 py-1.5 rounded-lg text-sm font-medium transition">اسکن کارت / کلاینت</button>
-                <button onclick="switchTab('clients')" class="tab-btn bg-indigo-800/60 px-3 py-1.5 rounded-lg text-sm font-medium transition">ثبت کلاینت</button>
-                <button onclick="switchTab('services')" class="tab-btn bg-indigo-800/60 px-3 py-1.5 rounded-lg text-sm font-medium transition">مدیریت لاین‌ها و خدمات</button>
-                <button onclick="switchTab('treatments')" class="tab-btn bg-indigo-800/60 px-3 py-1.5 rounded-lg text-sm font-medium transition">تخصیص دوره درمانی</button>
+    <!-- ناوبری سایبرپانک -->
+    <header class="bg-[#090d16] border-b border-cyan-500/30 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto flex flex-wrap justify-between items-center p-4">
+            <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500 tracking-wider">
+                ⚡ CYBER-CLINIC v2.0
+            </h1>
+            <nav class="flex gap-2 mt-2 md:mt-0 overflow-x-auto pb-1 md:pb-0">
+                <button onclick="switchTab('scanner')" class="tab-btn bg-cyan-950 text-cyan-400 border border-cyan-500/50 px-4 py-2 rounded-xl text-sm font-bold transition">اسکن کارت</button>
+                <button onclick="switchTab('clients')" class="tab-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2 rounded-xl text-sm font-bold transition">لیست کلاینت‌ها</button>
+                <button onclick="switchTab('new-client')" class="tab-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2 rounded-xl text-sm font-bold transition">ثبت کلاینت جدید</button>
+                <button onclick="switchTab('services')" class="tab-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2 rounded-xl text-sm font-bold transition">لاین‌ها و خدمات</button>
             </nav>
         </div>
     </header>
 
     <main class="container mx-auto mt-6 px-4 max-w-4xl">
 
-        <!-- تب ۱: اسکن کارت و بررسی کلاینت -->
+        <!-- تب ۱: اسکن کارت سریع -->
         <section id="tab-scanner" class="tab-content">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-6">
-                <h2 class="text-lg font-bold mb-4 text-indigo-600">💳 اسکن کارت اتوماسیون یا جستجوی کلاینت</h2>
+            <div class="cyber-border p-6 rounded-2xl neon-glow-cyan mb-6">
+                <h2 class="text-lg font-bold mb-4 text-cyan-400">💳 اسکن کارت اتوماسیون کلاینت</h2>
                 <div class="flex gap-2">
-                    <input type="text" id="search-card-input" placeholder="شماره کارت اتوماسیون را وارد یا اسکن کنید..." class="flex-1 border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <button onclick="searchClientByCard()" class="bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 transition">بررسی کارت</button>
-                </div>
-            </div>
-
-            <div id="client-result" class="hidden space-y-4">
-                <!-- اطلاعات کلاینت -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center flex-wrap gap-4">
-                    <div>
-                        <h3 id="res-name" class="text-xl font-bold"></h3>
-                        <p class="text-slate-500 text-sm mt-1">تلفن: <span id="res-phone"></span> | شماره کارت: <span id="res-card"></span></p>
-                    </div>
-                    <div id="res-rank-badge" class="px-4 py-2 rounded-xl text-white font-bold text-sm shadow"></div>
-                </div>
-
-                <!-- روندهای درمانی کلاینت -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <h3 class="font-bold text-lg mb-4">🩺 روند درمانی و جلسات فعال</h3>
-                    <div id="res-treatments-list" class="space-y-4">
-                        <!-- لیست جلسات اینجا لود می‌شود -->
-                    </div>
+                    <input type="text" id="search-card-input" placeholder="شماره کارت اتوماسیون را وارد کنید..." class="cyber-input flex-1 rounded-xl px-4 py-3">
+                    <button onclick="searchClientByCard()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black px-6 py-3 rounded-xl transition shadow-lg shadow-cyan-500/30">بررسی</button>
                 </div>
             </div>
         </section>
 
-        <!-- تب ۲: ثبت کلاینت جدید -->
+        <!-- تب ۲: لیست کلاینت‌ها (برای دسترسی به پروفایل اختصاصی) -->
         <section id="tab-clients" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4 text-indigo-600">👤 ثبت کلاینت جدید</h2>
+            <div class="cyber-border p-6 rounded-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-cyan-400">👤 دیتابیس کلاینت‌ها</h2>
+                    <input type="text" id="client-search-box" oninput="renderClientsList()" placeholder="جستجوی نام یا کارت..." class="cyber-input rounded-xl px-3 py-1.5 text-sm w-48">
+                </div>
+                <div id="clients-list-container" class="space-y-3"></div>
+            </div>
+        </section>
+
+        <!-- صفحه پروفایل و ویرایش اختصاصی کلاینت -->
+        <section id="tab-profile" class="tab-content hidden space-y-6">
+            <button onclick="switchTab('clients')" class="text-cyan-400 hover:underline text-sm font-bold mb-2 inline-block">← بازگشت به لیست کلاینت‌ها</button>
+            
+            <div class="cyber-border p-6 rounded-2xl neon-glow-cyan relative overflow-hidden">
+                <div class="absolute top-0 left-0 bg-cyan-500/10 text-cyan-400 text-xs px-4 py-1 rounded-br-xl font-mono">پروفایل امن کلاینت</div>
+                <h2 class="text-xl font-black text-cyan-300 mt-2 mb-4">ویرایش اطلاعات کلاینت</h2>
+                
+                <form onsubmit="updateClientProfile(event)" class="space-y-4">
+                    <input type="hidden" id="profile-client-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1">نام و نام خانوادگی</label>
+                            <input type="text" id="profile-name" required class="cyber-input w-full rounded-xl px-4 py-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1">شماره تماس</label>
+                            <input type="text" id="profile-phone" required class="cyber-input w-full rounded-xl px-4 py-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1">شماره کارت اتوماسیون</label>
+                            <input type="text" id="profile-card" required class="cyber-input w-full rounded-xl px-4 py-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1">رتبه رنگی و تخفیف</label>
+                            <select id="profile-rank" class="cyber-input w-full rounded-xl px-4 py-2.5">
+                                <option value="1">برنزی (۵ درصد تخفیف)</option>
+                                <option value="2">نقره‌ای (۱۰ درصد تخفیف)</option>
+                                <option value="3">طلایی (۱۵ درصد تخفیف)</option>
+                                <option value="4">VIP مشکی (۲۵ درصد تخفیف)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 pt-2">
+                        <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition">ذخیره تغییرات پروفایل</button>
+                        <button type="button" onclick="deleteClient()" class="bg-rose-500/20 text-rose-400 border border-rose-500/40 hover:bg-rose-500/30 font-bold px-4 py-2.5 rounded-xl transition">حذف کلاینت</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- بخش افزودن روند درمانی جدید به این کلاینت -->
+            <div class="cyber-border p-6 rounded-2xl">
+                <h3 class="text-base font-bold text-fuchsia-400 mb-4">🩺 تخصیص دوره درمانی جدید با تعیین اپراتور</h3>
+                <form onsubmit="handleTreatmentSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1">انتخاب خدمت</label>
+                            <select id="treatment-service" required class="cyber-input w-full rounded-xl px-3 py-2.5"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1">تعداد کل جلسات</label>
+                            <input type="number" id="treatment-sessions" value="4" min="1" required class="cyber-input w-full rounded-xl px-3 py-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-1">نام اپراتور متخصص</label>
+                            <input type="text" id="treatment-operator" placeholder="مثلاً: سارا رضایی" required class="cyber-input w-full rounded-xl px-3 py-2.5">
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold px-6 py-2.5 rounded-xl transition shadow-lg shadow-fuchsia-600/30">ثبت و اختصاص دوره</button>
+                </form>
+            </div>
+
+            <!-- لیست دوره‌های درمانی کلاینت -->
+            <div class="cyber-border p-6 rounded-2xl">
+                <h3 class="text-base font-bold text-cyan-400 mb-4">پروژه جلسات فعال کلاینت</h3>
+                <div id="profile-treatments-list" class="space-y-3"></div>
+            </div>
+        </section>
+
+        <!-- تب ۳: ثبت کلاینت جدید -->
+        <section id="tab-new-client" class="tab-content hidden">
+            <div class="cyber-border p-6 rounded-2xl">
+                <h2 class="text-lg font-bold mb-4 text-cyan-400">👤 ثبت کلاینت جدید در سیستم</h2>
                 <form onsubmit="handleClientSubmit(event)" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-1">نام و نام خانوادگی</label>
-                        <input type="text" id="client-name" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-bold text-slate-400 mb-1">نام و نام خانوادگی</label>
+                        <input type="text" id="client-name" required class="cyber-input w-full rounded-xl px-4 py-3">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">شماره تماس</label>
-                        <input type="text" id="client-phone" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-bold text-slate-400 mb-1">شماره تماس</label>
+                        <input type="text" id="client-phone" required class="cyber-input w-full rounded-xl px-4 py-3">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">شماره کارت اتوماسیون (فیزیکی/بارکد)</label>
-                        <input type="text" id="client-card" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-bold text-slate-400 mb-1">شماره کارت اتوماسیون (فیزیکی/بارکد)</label>
+                        <input type="text" id="client-card" required class="cyber-input w-full rounded-xl px-4 py-3">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">رتبه رنگی کلاینت (و تخفیف مربوطه)</label>
-                        <select id="client-rank" class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-bold text-slate-400 mb-1">رتبه رنگی کلاینت</label>
+                        <select id="client-rank" class="cyber-input w-full rounded-xl px-4 py-3">
                             <option value="1">برنزی (۵ درصد تخفیف)</option>
                             <option value="2">نقره‌ای (۱۰ درصد تخفیف)</option>
                             <option value="3">طلایی (۱۵ درصد تخفیف)</option>
-                            <option value="4">VIP - مشکی (۲۵ درصد تخفیف)</option>
+                            <option value="4">VIP مشکی (۲۵ درصد تخفیف)</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">ثبت و ذخیره کلاینت</button>
+                    <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-3 rounded-xl font-bold transition shadow-lg shadow-cyan-500/20">ثبت نهایی کلاینت</button>
                 </form>
             </div>
         </section>
 
-        <!-- تب ۳: مدیریت لاین‌ها و خدمات -->
-        <section id="tab-services" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-6">
-                <h2 class="text-lg font-bold mb-4 text-indigo-600">⚙️ افزودن خدمت جدید به لاین‌ها</h2>
+        <!-- تب ۴: مدیریت لاین‌ها و خدمات -->
+        <section id="tab-services" class="tab-content hidden space-y-6">
+            <div class="cyber-border p-6 rounded-2xl">
+                <h2 class="text-lg font-bold mb-4 text-fuchsia-400">⚙️ مدیریت لاین‌ها و خدمات کلینیک</h2>
                 <form onsubmit="handleServiceSubmit(event)" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-1">انتخاب لاین تخصصی</label>
-                        <select id="service-line" class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-bold text-slate-400 mb-1">انتخاب لاین تخصصی</label>
+                        <select id="service-line" class="cyber-input w-full rounded-xl px-4 py-3">
                             <option value="laser">لاین لیزر</option>
                             <option value="massage">لاین ماساژ</option>
                             <option value="skin_hair">لاین پوست و مو</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">نام خدمت</label>
-                        <input type="text" id="service-name" placeholder="مثلاً: لیزر فول‌بادی / پاکسازی صورت" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-bold text-slate-400 mb-1">نام خدمت</label>
+                        <input type="text" id="service-name" placeholder="مثلاً: لیزر فول‌بادی / فیشیال تخصصی" required class="cyber-input w-full rounded-xl px-4 py-3">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">قیمت پایه (تومان)</label>
-                        <input type="number" id="service-price" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-bold text-slate-400 mb-1">قیمت پایه (تومان)</label>
+                        <input type="number" id="service-price" required class="cyber-input w-full rounded-xl px-4 py-3">
                     </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">افزودن خدمت</button>
+                    <button type="submit" class="w-full bg-fuchsia-600 hover:bg-fuchsia-500 text-white py-3 rounded-xl font-bold transition">افزودن خدمت به دیتابیس</button>
                 </form>
             </div>
 
-            <!-- لیست خدمات موجود -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h3 class="font-bold text-mb mb-4">لیست خدمات تعریف شده</h3>
+            <div class="cyber-border p-6 rounded-2xl">
+                <h3 class="font-bold text-sm text-cyan-400 mb-4">لیست خدمات موجود در لاین‌ها</h3>
                 <div id="services-list" class="space-y-2"></div>
-            </div>
-        </section>
-
-        <!-- تب ۴: تخصیص روند درمانی -->
-        <section id="tab-treatments" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4 text-indigo-600">📋 تخصیص دوره و جلسات درمانی به کلاینت</h2>
-                <form onsubmit="handleTreatmentSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">انتخاب کلاینت</label>
-                        <select id="treatment-client" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500"></select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">انتخاب خدمت</label>
-                        <select id="treatment-service" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500"></select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">تعداد کل جلسات دوره</label>
-                        <input type="number" id="treatment-total-sessions" value="4" min="1" required class="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">تخصیص دوره</button>
-                </form>
             </div>
         </section>
 
     </main>
 
     <script>
-        // دیتای پایه در LocalStorage
         const defaultData = {
             ranks: [
-                { id: 1, name: 'برنزی', color: 'bg-amber-700', discount: 5 },
-                { id: 2, name: 'نقره‌ای', color: 'bg-slate-400', discount: 10 },
-                { id: 3, name: 'طلایی', color: 'bg-amber-500', discount: 15 },
-                { id: 4, name: 'VIP (مشکی)', color: 'bg-slate-900', discount: 25 }
+                { id: 1, name: 'برنزی', color: 'bg-amber-800 text-amber-200 border-amber-600', discount: 5 },
+                { id: 2, name: 'نقره‌ای', color: 'bg-slate-700 text-slate-200 border-slate-500', discount: 10 },
+                { id: 3, name: 'طلایی', color: 'bg-amber-600 text-yellow-100 border-amber-400', discount: 15 },
+                { id: 4, name: 'VIP (مشکی)', color: 'bg-fuchsia-950 text-fuchsia-300 border-fuchsia-500', discount: 25 }
             ],
             clients: [],
             services: [
-                { id: 1, line_name: 'laser', service_name: 'لیزر کل بدن', base_price: 1200000 },
-                { id: 2, line_name: 'massage', service_name: 'ماساژ ریلکسی', base_price: 600000 },
-                { id: 3, line_name: 'skin_hair', service_name: 'فیشیال تخصصی پوست', base_price: 900000 }
+                { id: 1, line_name: 'laser', service_name: 'لیزر کل بدن (Alex)', base_price: 1200000 },
+                { id: 2, line_name: 'massage', service_name: 'ماساژ ریلکسی کل بدن', base_price: 600000 },
+                { id: 3, line_name: 'skin_hair', service_name: 'پاکسازی عمیق پوست', base_price: 900000 }
             ],
             treatments: []
         };
 
         function getDB() {
-            let data = localStorage.getItem('clinic_db');
+            let data = localStorage.getItem('cyber_clinic_db');
             if (!data) {
                 data = JSON.stringify(defaultData);
-                localStorage.setItem('clinic_db', data);
+                localStorage.setItem('cyber_clinic_db', data);
             }
             return JSON.parse(data);
         }
 
         function saveDB(data) {
-            localStorage.setItem('clinic_db', JSON.stringify(data));
+            localStorage.setItem('cyber_clinic_db', JSON.stringify(data));
         }
 
-        // مدیریت تب‌ها
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
 
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-700');
-                btn.classList.add('bg-indigo-800/60');
+                btn.className = "tab-btn bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2 rounded-xl text-sm font-bold transition";
             });
-            event.target.classList.add('bg-indigo-700');
-            event.target.classList.remove('bg-indigo-800/60');
+            
+            // Highlight active tab if exists in nav
+            event && event.target && event.target.classList.contains('tab-btn') && (
+                event.target.className = "tab-btn bg-cyan-950 text-cyan-400 border border-cyan-500/50 px-4 py-2 rounded-xl text-sm font-bold transition"
+            );
 
-            if (tabId === 'treatments') loadSelectOptions();
+            if (tabId === 'clients') renderClientsList();
             if (tabId === 'services') renderServicesList();
         }
 
-        // ثبت کلاینت
+        // ثبت کلاینت جدید
         function handleClientSubmit(e) {
             e.preventDefault();
             const db = getDB();
@@ -201,81 +266,207 @@
             const rank_id = parseInt(document.getElementById('client-rank').value);
 
             if(db.clients.some(c => c.card_id === card_id)) {
-                alert('این شماره کارت قبلاً ثبت شده است!');
+                alert('خطا: شماره کارت اتوماسیون تکراری است!');
                 return;
             }
 
-            db.clients.push({ id: Date.now(), name, phone, card_id, rank_id });
+            const newId = Date.now();
+            db.clients.push({ id: newId, name, phone, card_id, rank_id });
             saveDB(db);
-            alert('کلاینت با موفقیت ثبت شد!');
+            alert('کلاینت با موفقیت در سیستم ثبت شد.');
             e.target.reset();
+            openClientProfile(newId);
         }
 
-        // جستجو با کارت اتوماسیون
+        // جستجو با اسکن کارت
         function searchClientByCard() {
             const cardId = document.getElementById('search-card-input').value.trim();
             const db = getDB();
             const client = db.clients.find(c => c.card_id === cardId);
 
             if (!client) {
-                alert('کلاینتی با این شماره کارت یافت نشد.');
-                document.getElementById('client-result').classList.add('hidden');
+                alert('کلاینتی با این شماره کارت پیدا نشد.');
+                return;
+            }
+            openClientProfile(client.id);
+        }
+
+        // رندر لیست کلاینت‌ها
+        function renderClientsList() {
+            const db = getDB();
+            const search = document.getElementById('client-search-box').value.toLowerCase();
+            const container = document.getElementById('clients-list-container');
+            
+            const filtered = db.clients.filter(c => c.name.toLowerCase().includes(search) || c.card_id.includes(search));
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-sm">هیچ کلاینتی یافت نشد.</p>';
                 return;
             }
 
-            const rank = db.ranks.find(r => r.id === client.rank_id) || db.ranks[0];
-            const treatments = db.treatments.filter(t => t.client_id === client.id);
-
-            document.getElementById('res-name').innerText = client.name;
-            document.getElementById('res-phone').innerText = client.phone;
-            document.getElementById('res-card').innerText = client.card_id;
-            
-            const badge = document.getElementById('res-rank-badge');
-            badge.className = `px-4 py-2 rounded-xl text-white font-bold text-sm shadow ${rank.color}`;
-            badge.innerText = `رتبه: ${rank.name} (${rank.discount}% تخفیف)`;
-
             let html = '';
-            if (treatments.length === 0) {
-                html = '<p class="text-slate-400 text-sm">هیچ دوره درمانی فعالی برای این کلاینت ثبت نشده است.</p>';
-            } else {
-                treatments.forEach(t => {
-                    const srv = db.services.find(s => s.id === t.service_id) || { service_name: 'خدمت نامشخص', line_name: '-' };
-                    const remaining = t.total_sessions - t.completed_sessions;
-                    const percent = Math.round((t.completed_sessions / t.total_sessions) * 100);
-
-                    html += `
-                        <div class="border border-slate-100 bg-slate-50 p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                            <div>
-                                <span class="text-xs bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-md font-bold">${srv.line_name.toUpperCase()}</span>
-                                <h4 class="font-bold text-lg mt-1">${srv.service_name}</h4>
-                                <p class="text-sm text-slate-600 mt-1">
-                                    انجام‌شده: <span class="font-bold text-indigo-600">${t.completed_sessions}</span> | 
-                                    باقی‌مانده: <span class="font-bold text-emerald-600">${remaining}</span> از کل ${t.total_sessions} جلسه
-                                </p>
-                            </div>
-                            <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                                <button onclick="completeSession(${t.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition">ثبت انجام ۱ جلسه +</button>
-                            </div>
+            filtered.forEach(c => {
+                const rank = db.ranks.find(r => r.id === c.rank_id) || db.ranks[0];
+                html += `
+                    <div class="cyber-border p-4 rounded-xl flex justify-between items-center hover:border-cyan-400 transition cursor-pointer" onclick="openClientProfile(${c.id})">
+                        <div>
+                            <h4 class="font-bold text-cyan-300 text-base">${c.name}</h4>
+                            <p class="text-xs text-slate-400 mt-1">تلفن: ${c.phone} | کارت: <span class="text-fuchsia-400 font-mono">${c.card_id}</span></p>
                         </div>
-                    `;
-                });
-            }
-
-            document.getElementById('res-treatments-list').innerHTML = html;
-            document.getElementById('client-result').classList.remove('hidden');
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs px-3 py-1 rounded-lg border ${rank.color}">${rank.name} (${rank.discount}%)</span>
+                            <span class="text-cyan-400 text-sm font-bold">پروفایل و ویرایش →</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
-        // ثبت پیشرفت جلسه (+1)
+        // باز کردن صفحه پروفایل و ویرایش کلاینت
+        function openClientProfile(clientId) {
+            const db = getDB();
+            const client = db.clients.find(c => c.id === clientId);
+            if (!client) return;
+
+            document.getElementById('profile-client-id').value = client.id;
+            document.getElementById('profile-name').value = client.name;
+            document.getElementById('profile-phone').value = client.phone;
+            document.getElementById('profile-card').value = client.card_id;
+            document.getElementById('profile-rank').value = client.rank_id;
+
+            // پر کردن لیست خدمات در فرم تخصیص دوره
+            let sSelect = document.getElementById('treatment-service');
+            sSelect.innerHTML = db.services.map(s => `<option value="${s.id}">[${s.line_name.toUpperCase()}] ${s.service_name} (${s.base_price.toLocaleString()} ت)</option>`).join('');
+
+            renderProfileTreatments(client.id);
+
+            // نمایش تب پروفایل
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-profile').classList.remove('hidden');
+        }
+
+        // بروزرسانی پروفایل کلاینت
+        function updateClientProfile(e) {
+            e.preventDefault();
+            const db = getDB();
+            const id = parseInt(document.getElementById('profile-client-id').value);
+            const client = db.clients.find(c => c.id === id);
+
+            if (!client) return;
+
+            const newCard = document.getElementById('profile-card').value;
+            if (db.clients.some(c => c.card_id === newCard && c.id !== id)) {
+                alert('خطا: این شماره کارت متعلق به کلاینت دیگری است!');
+                return;
+            }
+
+            client.name = document.getElementById('profile-name').value;
+            client.phone = document.getElementById('profile-phone').value;
+            client.card_id = newCard;
+            client.rank_id = parseInt(document.getElementById('profile-rank').value);
+
+            saveDB(db);
+            alert('اطلاعات پروفایل کلاینت با موفقیت ویرایش شد.');
+        }
+
+        // حذف کلاینت
+        function deleteClient() {
+            if (!confirm('آیا از حذف کامل این کلاینت و سوابق آن اطمینان دارید؟')) return;
+            const db = getDB();
+            const id = parseInt(document.getElementById('profile-client-id').value);
+            
+            db.clients = db.clients.filter(c => c.id !== id);
+            db.treatments = db.treatments.filter(t => t.client_id !== id);
+            saveDB(db);
+
+            alert('کلاینت حذف شد.');
+            switchTab('clients');
+        }
+
+        // ثبت دوره درمانی جدید با اپراتور
+        function handleTreatmentSubmit(e) {
+            e.preventDefault();
+            const db = getDB();
+            const client_id = parseInt(document.getElementById('profile-client-id').value);
+            const service_id = parseInt(document.getElementById('treatment-service').value);
+            const total_sessions = parseInt(document.getElementById('treatment-sessions').value);
+            const operator_name = document.getElementById('treatment-operator').value.trim();
+
+            db.treatments.push({
+                id: Date.now(),
+                client_id,
+                service_id,
+                total_sessions,
+                completed_sessions: 0,
+                operator_name
+            });
+
+            saveDB(db);
+            alert('دوره درمانی جدید با موفقیت ثبت شد.');
+            document.getElementById('treatment-operator').value = '';
+            renderProfileTreatments(client_id);
+        }
+
+        // رندر جلسات در صفحه پروفایل
+        function renderProfileTreatments(clientId) {
+            const db = getDB();
+            const treatments = db.treatments.filter(t => t.client_id === clientId);
+            const container = document.getElementById('profile-treatments-list');
+
+            if (treatments.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-sm">هیچ دوره درمانی فعالی ثبت نشده است.</p>';
+                return;
+            }
+
+            let html = '';
+            treatments.forEach(t => {
+                const srv = db.services.find(s => s.id === t.service_id) || { service_name: 'خدمت حذف شده', line_name: '-' };
+                const remaining = t.total_sessions - t.completed_sessions;
+                
+                html += `
+                    <div class="cyber-border p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-500/40 px-2.5 py-0.5 rounded font-mono">${srv.line_name.toUpperCase()}</span>
+                            <h4 class="font-bold text-base text-slate-200 mt-1">${srv.service_name}</h4>
+                            <p class="text-xs text-slate-400 mt-1">
+                                اپراتور متخصص: <span class="text-fuchsia-400 font-bold">${t.operator_name}</span> | 
+                                انجام‌شده: <span class="text-cyan-400 font-bold">${t.completed_sessions}</span> | 
+                                باقی‌مانده: <span class="text-emerald-400 font-bold">${remaining}</span> از ${t.total_sessions}
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="completeSession(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs transition">ثبت انجام ۱ جلسه +</button>
+                            <button onclick="deleteTreatment(${t.id})" class="text-rose-400 hover:text-rose-300 text-xs px-2 py-2">حذف دوره</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // افزایش تعداد جلسات انجام شده
         function completeSession(treatmentId) {
             const db = getDB();
             const t = db.treatments.find(item => item.id === treatmentId);
             if (t && t.completed_sessions < t.total_sessions) {
                 t.completed_sessions++;
                 saveDB(db);
-                searchClientByCard(); // رفرش نتایج
+                renderProfileTreatments(t.client_id);
             } else {
-                alert('تمام جلسات این دوره کامل شده است!');
+                alert('تمام جلسات این دوره به اتمام رسیده است!');
             }
+        }
+
+        function deleteTreatment(treatmentId) {
+            if(!confirm('آیا این دوره درمانی حذف شود؟')) return;
+            const db = getDB();
+            const t = db.treatments.find(item => item.id === treatmentId);
+            if(!t) return;
+            const clientId = t.client_id;
+            db.treatments = db.treatments.filter(item => item.id !== treatmentId);
+            saveDB(db);
+            renderProfileTreatments(clientId);
         }
 
         // افزودن خدمت
@@ -288,30 +479,29 @@
 
             db.services.push({ id: Date.now(), line_name, service_name, base_price });
             saveDB(db);
-            alert('خدمت جدید اضافه شد!');
+            alert('خدمت جدید اضافه شد.');
             e.target.reset();
             renderServicesList();
         }
 
-        // رندر لیست خدمات با امکان حذف
         function renderServicesList() {
             const db = getDB();
             const listEl = document.getElementById('services-list');
             if (db.services.length === 0) {
-                listEl.innerHTML = '<p class="text-slate-400 text-sm">خدمتی ثبت نشده است.</p>';
+                listEl.innerHTML = '<p class="text-slate-500 text-sm">خدمتی ثبت نشده است.</p>';
                 return;
             }
             let html = '';
             db.services.forEach(s => {
                 html += `
-                    <div class="flex justify-between items-center border-b pb-2">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2 text-sm">
                         <div>
-                            <span class="text-xs bg-slate-200 px-2 py-0.5 rounded">${s.line_name}</span>
-                            <span class="font-bold mr-2">${s.service_name}</span>
+                            <span class="text-xs bg-slate-900 text-slate-400 px-2 py-0.5 rounded">${s.line_name}</span>
+                            <span class="font-bold text-slate-200 mr-2">${s.service_name}</span>
                         </div>
                         <div class="flex items-center gap-4">
-                            <span class="text-sm font-semibold text-emerald-600">${s.base_price.toLocaleString()} تومان</span>
-                            <button onclick="deleteService(${s.id})" class="text-rose-500 hover:text-rose-700 text-sm font-bold">حذف</button>
+                            <span class="text-xs font-semibold text-emerald-400">${s.base_price.toLocaleString()} تومان</span>
+                            <button onclick="deleteService(${s.id})" class="text-rose-500 hover:text-rose-400 text-xs font-bold">حذف</button>
                         </div>
                     </div>
                 `;
@@ -325,44 +515,6 @@
             saveDB(db);
             renderServicesList();
         }
-
-        // لود گزینه‌ها در فرم تخصیص دوره
-        function loadSelectOptions() {
-            const db = getDB();
-            let clientSelect = document.getElementById('treatment-client');
-            let serviceSelect = document.getElementById('treatment-service');
-
-            clientSelect.innerHTML = db.clients.map(c => `<option value="${c.id}">${c.name} (کارت: ${c.card_id})</option>`).join('');
-            serviceSelect.innerHTML = db.services.map(s => `<option value="${s.id}">[${s.line_name}] ${s.service_name} - ${s.base_price} ت</option>`).join('');
-        }
-
-        // ثبت تخصیص دوره درمانی
-        function handleTreatmentSubmit(e) {
-            e.preventDefault();
-            const db = getDB();
-            const client_id = parseInt(document.getElementById('treatment-client').value);
-            const service_id = parseInt(document.getElementById('treatment-service').value);
-            const total_sessions = parseInt(document.getElementById('treatment-total-sessions').value);
-
-            if (!client_id || !service_id) {
-                alert('لطفاً کلاینت و خدمت را به درستی انتخاب کنید.');
-                return;
-            }
-
-            db.treatments.push({
-                id: Date.now(),
-                client_id,
-                service_id,
-                total_sessions,
-                completed_sessions: 0,
-                status: 'Active'
-            });
-
-            saveDB(db);
-            alert('دوره درمانی با موفقیت برای کلاینت ثبت شد!');
-            e.target.reset();
-        }
     </script>
 </body>
 </html>
-      
