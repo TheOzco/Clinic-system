@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت کلینیک زیبایی</title>
+    <title>مدیریت کلینیک زیبایی و حسابداری جلسات</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -21,11 +21,11 @@
     <header class="bg-slate-900 border-b border-slate-800 px-6 py-3 flex justify-between items-center shrink-0">
         <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center font-black text-lg text-white shadow-lg shadow-indigo-500/30">✦</div>
-            <h1 class="text-base font-bold text-white tracking-wide">سیستم اتوماسیون کلینیک زیبایی</h1>
+            <h1 class="text-base font-bold text-white tracking-wide">سیستم اتوماسیون و حسابداری کلینیک</h1>
         </div>
         <div class="flex items-center gap-3">
             <button onclick="openModal('modal-service')" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-600/30 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
-                <span>⚙️</span> مدیریت لاین‌ها و خدمات
+                <span>⚙️</span> مدیریت خدمات و لاین‌ها
             </button>
             <button onclick="openModal('modal-new-client')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-1.5 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-600/20">
                 + کلاینت جدید
@@ -36,9 +36,8 @@
     <!-- بدنه اصلی دو ستونه -->
     <div class="flex flex-1 overflow-hidden">
 
-        <!-- ستون سمت راست: لیست و اسکن کلاینت‌ها -->
+        <!-- ستون سمت راست: لیست کلاینت‌ها -->
         <aside class="w-80 md:w-96 bg-slate-900/60 border-l border-slate-800/80 flex flex-col shrink-0">
-            <!-- اسکن کارت و جستجو -->
             <div class="p-4 border-b border-slate-800/80 space-y-3">
                 <div class="relative">
                     <input type="text" id="scan-input" onkeypress="if(event.key==='Enter') searchByCard()" placeholder="اسکن یا تایپ کارت اتوماسیون..." class="glass-input w-full pl-9 pr-3 py-2 rounded-xl text-xs">
@@ -46,39 +45,37 @@
                 </div>
                 <input type="text" id="search-input" oninput="renderClientsList()" placeholder="جستجوی نام کلاینت..." class="glass-input w-full px-3 py-2 rounded-xl text-xs">
             </div>
-
-            <!-- لیست کلاینت‌ها -->
             <div id="clients-sidebar" class="flex-1 overflow-y-auto p-3 space-y-2"></div>
         </aside>
 
-        <!-- ستون سمت چپ: صفحه پروفایل کامل کلاینت انتخاب شده -->
+        <!-- ستون سمت چپ: صفحه پروفایل و سوابق مالی جلسات -->
         <main id="main-content" class="flex-1 overflow-y-auto p-6">
             <div id="empty-state" class="h-full flex flex-col items-center justify-center text-slate-500">
                 <div class="text-5xl mb-3">👤</div>
-                <p class="text-sm">لطفاً یک کلاینت را از لیست سمت راست انتخاب کنید یا کارت اتوماسیون را اسکن نمایید.</p>
+                <p class="text-sm">لطفاً یک کلاینت را از لیست انتخاب کنید یا کارت اتوماسیون را اسکن کنید.</p>
             </div>
 
             <div id="client-profile-view" class="hidden max-w-4xl mx-auto space-y-6">
                 
-                <!-- کارت پروفایل و اطلاعات اصلی -->
+                <!-- اطلاعات اصلی پروفایل -->
                 <div class="glass-card p-6 rounded-2xl relative overflow-hidden">
-                    <div class="flex flex-wrap justify-between items-start gap-4 mb-6">
+                    <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
                         <div>
                             <div class="flex items-center gap-3">
                                 <h2 id="view-name" class="text-2xl font-black text-white"></h2>
                                 <span id="view-rank-badge" class="px-3 py-1 rounded-xl text-xs font-bold"></span>
                             </div>
                             <p class="text-xs text-slate-400 mt-2 flex items-center gap-4">
-                                <span>📞 شماره تماس: <strong id="view-phone" class="text-slate-200"></strong></span>
+                                <span>📞 تماس: <strong id="view-phone" class="text-slate-200"></strong></span>
                                 <span>💳 کارت اتوماسیون: <strong id="view-card" class="text-indigo-400 font-mono"></strong></span>
                             </p>
                         </div>
                         <button onclick="toggleEditMode()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-xl transition">
-                            ✏️ ویرایش پروفایل
+                            ✏️ ویرایش اطلاعات
                         </button>
                     </div>
 
-                    <!-- فرم ویرایش سریع کلاینت (در حالت عادی مخفی است) -->
+                    <!-- فرم ویرایش سریع -->
                     <form id="edit-profile-form" onsubmit="saveClientEdit(event)" class="hidden border-t border-slate-700/60 pt-4 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <input type="hidden" id="edit-id">
                         <div>
@@ -90,7 +87,7 @@
                             <input type="text" id="edit-phone" required class="glass-input w-full px-3 py-1.5 rounded-lg text-xs">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-400 mb-1">شماره کارت اتوماسیون</label>
+                            <label class="block text-[11px] text-slate-400 mb-1">کارت اتوماسیون</label>
                             <input type="text" id="edit-card" required class="glass-input w-full px-3 py-1.5 rounded-lg text-xs">
                         </div>
                         <div>
@@ -103,7 +100,7 @@
                             </select>
                         </div>
                         <div class="sm:col-span-2 flex justify-between items-center pt-2">
-                            <button type="button" onclick="deleteCurrentClient()" class="text-xs text-rose-400 hover:underline">حذف این کلاینت</button>
+                            <button type="button" onclick="deleteCurrentClient()" class="text-xs text-rose-400 hover:underline">حذف کلاینت</button>
                             <div class="flex gap-2">
                                 <button type="button" onclick="toggleEditMode()" class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg">انصراف</button>
                                 <button type="submit" class="text-xs bg-indigo-600 text-white px-4 py-1.5 rounded-lg font-bold">ذخیره تغییرات</button>
@@ -112,7 +109,7 @@
                     </form>
                 </div>
 
-                <!-- بخش اختصاص دوره درمانی جدید -->
+                <!-- اختصاص دوره درمانی جدید -->
                 <div class="glass-card p-5 rounded-2xl">
                     <h3 class="text-xs font-bold text-indigo-400 mb-3 flex items-center gap-1.5">
                         <span>➕</span> اختصاص دوره درمانی جدید
@@ -123,29 +120,76 @@
                             <select id="assign-service" required class="glass-input w-full px-3 py-1.5 rounded-xl text-xs"></select>
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-400 mb-1">تعداد جلسات دوره</label>
+                            <label class="block text-[11px] text-slate-400 mb-1">تعداد کل جلسات دوره</label>
                             <input type="number" id="assign-sessions" value="4" min="1" required class="glass-input w-full px-3 py-1.5 rounded-xl text-xs">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-400 mb-1">نام اپراتور متخصص</label>
+                            <label class="block text-[11px] text-slate-400 mb-1">اپراتور پیش‌فرض</label>
                             <input type="text" id="assign-operator" placeholder="نام اپراتور..." required class="glass-input w-full px-3 py-1.5 rounded-xl text-xs">
                         </div>
                         <div class="sm:col-span-3 flex justify-end">
                             <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-5 py-2 rounded-xl transition shadow-lg shadow-indigo-600/20">
-                                ثبت دوره برای کلاینت
+                                ثبت دوره درمانی
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- روندهای درمانی کلاینت -->
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-slate-300">روندهای درمانی و سوابق جلسات</h3>
-                    <div id="treatments-container" class="space-y-3"></div>
+                <!-- روندهای درمانی و ثبت جزییات جلسه -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-slate-300">روندهای درمانی و سوابق جلسات انجام‌شده</h3>
+                    <div id="treatments-container" class="space-y-4"></div>
                 </div>
 
             </div>
         </main>
+    </div>
+
+    <!-- مدال ثبت انجام جلسه جدید با محاسبه قیمت دقیق و تخفیف -->
+    <div id="modal-add-session" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="glass-card w-full max-w-md p-6 rounded-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-700/60 pb-3">
+                <h3 class="font-bold text-sm text-white">📋 ثبت جزئیات جلسه جدید و دریافت وجه</h3>
+                <button onclick="closeModal('modal-add-session')" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+            <form onsubmit="confirmAddSession(event)" class="space-y-3">
+                <input type="hidden" id="session-treatment-id">
+                
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">تاریخ و ساعت جلسه</label>
+                    <input type="text" id="session-datetime" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">نام اپراتور مجری جلسه</label>
+                    <input type="text" id="session-operator" required class="glass-input w-full px-3 py-2 rounded-xl text-xs">
+                </div>
+
+                <!-- فاکتور مالی جلسه -->
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-1.5 text-xs">
+                    <div class="flex justify-between text-slate-400">
+                        <span>قیمت پایه خدمت:</span>
+                        <span id="fact-base-price" class="font-mono text-white">0</span>
+                    </div>
+                    <div class="flex justify-between text-slate-400">
+                        <span>تخفیف رتبه رنگی (<span id="fact-rank-name">-</span>):</span>
+                        <span id="fact-discount" class="font-mono text-emerald-400">0</span>
+                    </div>
+                    <div class="border-t border-slate-800 pt-1.5 flex justify-between text-white font-bold">
+                        <span>مبلغ نهایی پرداختی بیمار:</span>
+                        <span id="fact-final-price" class="font-mono text-indigo-400 text-sm">0</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">یادداشت / توضیحات جلسه (اختیاری)</label>
+                    <input type="text" id="session-notes" placeholder="مثلاً: درجه دستگاه، وضعیت پوست..." class="glass-input w-full px-3 py-2 rounded-xl text-xs">
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                    ✓ ثبت جلسه و تایید پرداخت
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- مدال ثبت کلاینت جدید -->
@@ -192,7 +236,6 @@
                 <button onclick="closeModal('modal-service')" class="text-slate-400 hover:text-white">✕</button>
             </div>
             
-            <!-- فرم افزودن خدمت -->
             <form onsubmit="handleNewService(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-slate-900/50 p-3 rounded-xl">
                 <div>
                     <label class="block text-[10px] text-slate-400 mb-1">لاین</label>
@@ -217,7 +260,6 @@
                 </div>
             </form>
 
-            <!-- لیست خدمات -->
             <div id="services-modal-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
     </div>
@@ -237,23 +279,23 @@
                 { id: 3, line_name: 'skin_hair', service_name: 'فیشیال تخصصی VIP', base_price: 950000 }
             ],
             treatments: [],
+            sessionLogs: [], // سوابق تاریخ و ساعت و فاکتور مالی جلسات
             selectedClientId: null
         };
 
         function getDB() {
-            let data = localStorage.getItem('clinic_v3_db');
+            let data = localStorage.getItem('clinic_v4_db');
             if (!data) {
                 data = JSON.stringify(defaultData);
-                localStorage.setItem('clinic_v3_db', data);
+                localStorage.setItem('clinic_v4_db', data);
             }
             return JSON.parse(data);
         }
 
         function saveDB(data) {
-            localStorage.setItem('clinic_v3_db', JSON.stringify(data));
+            localStorage.setItem('clinic_v4_db', JSON.stringify(data));
         }
 
-        // مقداردهی اولیه
         window.onload = function() {
             renderClientsList();
             renderServicesModalList();
@@ -262,7 +304,6 @@
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-        // رندر لیست سمت راست کلاینت‌ها
         function renderClientsList() {
             const db = getDB();
             const query = document.getElementById('search-input').value.toLowerCase();
@@ -293,7 +334,6 @@
             container.innerHTML = html;
         }
 
-        // انتخاب کلاینت و نمایش صفحه اختصاصی
         function selectClient(id) {
             const db = getDB();
             db.selectedClientId = id;
@@ -303,7 +343,6 @@
             renderProfilePage();
         }
 
-        // اسکن سریع با کارت
         function searchByCard() {
             const card = document.getElementById('scan-input').value.trim();
             const db = getDB();
@@ -317,7 +356,6 @@
             }
         }
 
-        // رندر کامل صفحه پروفایل تک کلاینت
         function renderProfilePage() {
             const db = getDB();
             const client = db.clients.find(c => c.id === db.selectedClientId);
@@ -341,14 +379,12 @@
             badge.innerText = `${rank.name} (${rank.discount}٪ تخفیف)`;
             badge.className = `px-3 py-1 rounded-xl text-xs font-bold border ${rank.bg}`;
 
-            // پر کردن مقادیر فرم ویرایش
             document.getElementById('edit-id').value = client.id;
             document.getElementById('edit-name').value = client.name;
             document.getElementById('edit-phone').value = client.phone;
             document.getElementById('edit-card').value = client.card_id;
             document.getElementById('edit-rank').value = client.rank_id;
 
-            // پر کردن سلکت خدمات
             const sSelect = document.getElementById('assign-service');
             sSelect.innerHTML = db.services.map(s => `<option value="${s.id}">[${getLineTitle(s.line_name)}] ${s.service_name} (${s.base_price.toLocaleString()} ت)</option>`).join('');
 
@@ -365,7 +401,6 @@
             document.getElementById('edit-profile-form').classList.toggle('hidden');
         }
 
-        // ذخیره ویرایش کلاینت
         function saveClientEdit(e) {
             e.preventDefault();
             const db = getDB();
@@ -397,7 +432,6 @@
             renderProfilePage();
         }
 
-        // ثبت دوره درمانی
         function assignTreatment(e) {
             e.preventDefault();
             const db = getDB();
@@ -412,7 +446,7 @@
                 service_id,
                 total_sessions,
                 completed_sessions: 0,
-                operator_name
+                default_operator: operator_name
             });
 
             saveDB(db);
@@ -420,7 +454,7 @@
             renderTreatmentsList(client_id);
         }
 
-        // لیست دوره‌ها
+        // نمایش دوره‌ها و جلسات انجام‌شده همراه با فاکتورهای مالی
         function renderTreatmentsList(clientId) {
             const db = getDB();
             const list = db.treatments.filter(t => t.client_id === clientId);
@@ -433,19 +467,45 @@
 
             let html = '';
             list.forEach(t => {
-                const srv = db.services.find(s => s.id === t.service_id) || { service_name: 'نامشخص', line_name: '-' };
+                const srv = db.services.find(s => s.id === t.service_id) || { service_name: 'نامشخص', line_name: '-', base_price: 0 };
                 const remaining = t.total_sessions - t.completed_sessions;
                 const progress = Math.round((t.completed_sessions / t.total_sessions) * 100);
 
+                // سوابق جلسات برگزار شده در این دوره
+                const logs = (db.sessionLogs || []).filter(l => l.treatment_id === t.id);
+
+                let logsHtml = '';
+                if (logs.length > 0) {
+                    logsHtml += '<div class="border-t border-slate-800/80 pt-3 mt-3 space-y-2">';
+                    logsHtml += '<p class="text-[11px] font-bold text-slate-400">تاریخچه جلسات ثبت‌شده و صورتحساب‌ها:</p>';
+                    logs.forEach((log, idx) => {
+                        logsHtml += `
+                            <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-800/80 text-xs flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-indigo-300">جلسه ${idx + 1}</span> - 
+                                    <span class="text-slate-300 font-mono">${log.datetime}</span> 
+                                    <span class="text-slate-500 text-[10px]"> (اپراتور: ${log.operator})</span>
+                                    ${log.notes ? `<p class="text-[10px] text-slate-400 mt-0.5">یادداشت: ${log.notes}</p>` : ''}
+                                </div>
+                                <div class="text-left font-mono">
+                                    <span class="text-emerald-400 font-bold">${log.paid_amount.toLocaleString()} تومان</span>
+                                    <span class="block text-[9px] text-slate-500">با ${log.discount_percent}٪ تخفیف</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    logsHtml += '</div>';
+                }
+
                 html += `
-                    <div class="glass-card p-4 rounded-xl space-y-3">
+                    <div class="glass-card p-5 rounded-xl space-y-3">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] bg-indigo-900/50 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-md font-bold">${getLineTitle(srv.line_name)}</span>
                                 <h4 class="font-bold text-sm text-white mt-1">${srv.service_name}</h4>
-                                <p class="text-xs text-slate-400 mt-0.5">اپراتور: <strong class="text-slate-200">${t.operator_name}</strong></p>
+                                <p class="text-xs text-slate-400 mt-0.5">قیمت پایه هر جلسه: <strong class="text-slate-200">${srv.base_price.toLocaleString()} تومان</strong></p>
                             </div>
-                            <button onclick="deleteTreatment(${t.id})" class="text-[11px] text-rose-400 hover:underline">حذف</button>
+                            <button onclick="deleteTreatment(${t.id})" class="text-[11px] text-rose-400 hover:underline">حذف دوره</button>
                         </div>
 
                         <!-- پروگرس بار -->
@@ -460,37 +520,107 @@
                         </div>
 
                         <div class="flex justify-end pt-1">
-                            <button onclick="addSession(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition">
-                                + ثبت انجام ۱ جلسه
+                            <button onclick="openAddSessionModal(${t.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow-lg shadow-emerald-600/20">
+                                + ثبت جلسه جدید و دریافت وجه
                             </button>
                         </div>
+
+                        ${logsHtml}
                     </div>
                 `;
             });
             container.innerHTML = html;
         }
 
-        function addSession(treatmentId) {
+        // باز کردن مدال ثبت جلسه همراه با قیمت‌گذاری
+        function openAddSessionModal(treatmentId) {
             const db = getDB();
             const t = db.treatments.find(item => item.id === treatmentId);
-            if (t && t.completed_sessions < t.total_sessions) {
-                t.completed_sessions++;
-                saveDB(db);
-                renderTreatmentsList(t.client_id);
-            } else {
-                alert('تمامی جلسات این دوره ثبت شده‌اند.');
+            if (!t) return;
+
+            if (t.completed_sessions >= t.total_sessions) {
+                alert('تمامی جلسات این دوره قبلاً برگزار شده‌اند.');
+                return;
             }
+
+            const client = db.clients.find(c => c.id === t.client_id);
+            const rank = db.ranks.find(r => r.id === client.rank_id) || db.ranks[0];
+            const srv = db.services.find(s => s.id === t.service_id) || { base_price: 0 };
+
+            const basePrice = srv.base_price;
+            const discountAmount = (basePrice * rank.discount) / 100;
+            const finalPrice = basePrice - discountAmount;
+
+            document.getElementById('session-treatment-id').value = treatmentId;
+            
+            // تولید تاریخ و ساعت شمسی/میلادی خوانی روان
+            const now = new Date();
+            const formattedDate = `${now.toLocaleDateString('fa-IR')} - ساعت ${now.toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'})}`;
+            document.getElementById('session-datetime').value = formattedDate;
+
+            document.getElementById('session-operator').value = t.default_operator || '';
+            document.getElementById('session-notes').value = '';
+
+            document.getElementById('fact-base-price').innerText = basePrice.toLocaleString() + ' تومان';
+            document.getElementById('fact-rank-name').innerText = `${rank.name} - ${rank.discount}٪`;
+            document.getElementById('fact-discount').innerText = `- ${discountAmount.toLocaleString()} تومان`;
+            document.getElementById('fact-final-price').innerText = finalPrice.toLocaleString() + ' تومان';
+
+            openModal('modal-add-session');
+        }
+
+        // تایید ثبت جلسه و ذخیره سابقه مالی
+        function confirmAddSession(e) {
+            e.preventDefault();
+            const db = getDB();
+            const treatmentId = parseInt(document.getElementById('session-treatment-id').value);
+            const t = db.treatments.find(item => item.id === treatmentId);
+            
+            if (!t) return;
+
+            const client = db.clients.find(c => c.id === t.client_id);
+            const rank = db.ranks.find(r => r.id === client.rank_id) || db.ranks[0];
+            const srv = db.services.find(s => s.id === t.service_id) || { base_price: 0 };
+
+            const basePrice = srv.base_price;
+            const discountAmount = (basePrice * rank.discount) / 100;
+            const finalPrice = basePrice - discountAmount;
+
+            const datetime = document.getElementById('session-datetime').value;
+            const operator = document.getElementById('session-operator').value;
+            const notes = document.getElementById('session-notes').value;
+
+            // ۱. افزایش تعداد جلسات انجام شده
+            t.completed_sessions++;
+
+            // ۲. ذخیره لوگ جلسه
+            if (!db.sessionLogs) db.sessionLogs = [];
+            db.sessionLogs.push({
+                id: Date.now(),
+                treatment_id: treatmentId,
+                client_id: t.client_id,
+                datetime,
+                operator,
+                notes,
+                base_price: basePrice,
+                discount_percent: rank.discount,
+                paid_amount: finalPrice
+            });
+
+            saveDB(db);
+            closeModal('modal-add-session');
+            renderTreatmentsList(t.client_id);
         }
 
         function deleteTreatment(id) {
             if(!confirm('حذف شود؟')) return;
             const db = getDB();
             db.treatments = db.treatments.filter(t => t.id !== id);
+            if(db.sessionLogs) db.sessionLogs = db.sessionLogs.filter(l => l.treatment_id !== id);
             saveDB(db);
             renderTreatmentsList(db.selectedClientId);
         }
 
-        // ثبت کلاینت جدید
         function handleNewClient(e) {
             e.preventDefault();
             const db = getDB();
@@ -515,7 +645,6 @@
             renderProfilePage();
         }
 
-        // افزودن خدمت
         function handleNewService(e) {
             e.preventDefault();
             const db = getDB();
